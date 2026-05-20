@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cyber Nexus - A Visual Novel Adventure</title>
+  <meta name="description" content="An interactive web visual novel about gaming, anime, and late-night gaming sessions. Built with premium glassmorphism and HTML5/CSS3.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Background Layer -->
+  <div id="game-bg" class="game-bg-class"></div>
+  <div id="bg-overlay"></div>
+
+  <!-- Ambient Sound Effect (Optional Web Audio API / Synth Beep Engine) -->
+  <audio id="bgm" loop src=""></audio>
+
+  <!-- Start Screen -->
+  <main id="start-screen" class="screen-overlay">
+    <div class="glass-panel title-container">
+      <h1 class="game-title">CYBER<span class="neon-text">NEXUS</span></h1>
+      <p class="game-subtitle">Late Night Lounge Talks</p>
+      <div class="menu-buttons">
+        <button id="btn-start" class="btn btn-primary" onclick="startGame()">Start Novel</button>
+        <button id="btn-settings" class="btn btn-secondary" onclick="toggleSettingsModal(true)">Settings</button>
+        <button id="btn-about" class="btn btn-secondary" onclick="toggleAboutModal(true)">About</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Main Gameplay Container -->
+  <section id="game-screen" class="hidden">
+    <!-- Top Utility Bar -->
+    <header class="glass-bar top-bar">
+      <div class="logo-small">CYBER<span class="neon-text">NEXUS</span></div>
+      <nav class="game-controls">
+        <button id="btn-log" class="control-btn" title="Dialogue History" onclick="toggleLogModal(true)">History</button>
+        <button id="btn-save" class="control-btn" title="Quick Save" onclick="saveGame()">Save</button>
+        <button id="btn-load" class="control-btn" title="Quick Load" onclick="loadGame()">Load</button>
+        <button id="btn-game-settings" class="control-btn" title="Settings" onclick="toggleSettingsModal(true)">Settings</button>
+        <button id="btn-quit" class="control-btn" title="Quit to Main Menu" onclick="quitToMenu()">Menu</button>
+      </nav>
+    </header>
+
+    <!-- Character Layer -->
+    <div id="character-stage">
+      <div id="char-left" class="character-container hidden">
+        <img id="img-left" src="" alt="Left Character">
+      </div>
+      <div id="char-right" class="character-container hidden">
+        <img id="img-right" src="" alt="Right Character">
+      </div>
+    </div>
+
+    <!-- Dialogue Box Container -->
+    <div id="dialogue-panel" class="glass-panel text-panel-container">
+      <div id="speaker-name" class="speaker-tag">Narrator</div>
+      <div class="dialogue-body">
+        <p id="dialogue-text">Initializing story modules...</p>
+      </div>
+      <!-- Click Indicator / Continue Icon -->
+      <div id="continue-icon" class="continue-indicator"></div>
+      
+      <!-- Choices Overlay -->
+      <div id="choice-container" class="choices-wrapper hidden">
+        <!-- Buttons will be dynamically injected here -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Dialog History Modal (Log) -->
+  <div id="log-modal" class="modal-overlay hidden" onclick="toggleLogModal(false)">
+    <div class="glass-panel modal-content scrollbar" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Dialogue History</h2>
+        <button class="close-btn" onclick="toggleLogModal(false)">&times;</button>
+      </div>
+      <div id="log-body" class="modal-body">
+        <!-- Log entries injected here -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal-overlay hidden" onclick="toggleSettingsModal(false)">
+    <div class="glass-panel modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2>Settings</h2>
+        <button class="close-btn" onclick="toggleSettingsModal(false)">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <label for="speed-slider">Text Speed</label>
+          <input type="range" id="speed-slider" min="10" max="100" value="40" onchange="updateTextSpeed(this.value)">
+          <span id="speed-val">Normal</span>
+        </div>
+        <div class="setting-item">
+          <label for="sound-toggle">Dialogue Sound Effects</label>
+          <input type="checkbox" id="sound-toggle" checked onchange="toggleSound(this.checked)">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- About Modal -->
+  <div id="about-modal" class="modal-overlay hidden" onclick="toggleAboutModal(false)">
+    <div class="glass-panel modal-content" onclick="event.stopPropagation()">
+      <div class="modal-header">
+        <h2>About Cyber Nexus</h2>
+        <button class="close-btn" onclick="toggleAboutModal(false)">&times;</button>
+      </div>
+      <div class="modal-body text-center">
+        <p>A web visual novel demonstrating interactive story mechanics, dialogue histories, branching paths, and a responsive custom dialogue engine.</p>
+        <p style="margin-top: 15px; opacity: 0.8; font-size: 0.9rem;">Powered by HTML5, Vanilla CSS, and Javascript.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Game Script -->
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
