@@ -1,30 +1,85 @@
 // Dialogue data will be loaded dynamically from the YAML file
 let dialogueNodes = {};
-let currentDialoguePath = []; // Track active path: ['dialogues', 'nexus_lounge', 'nodes']
+let currentDialogueId = "1";
+let allDialogues = {};
+let allCharacters = {};
+let allBackgrounds = {};
+let allConversations = {};
 
-// Load dialogue data from YAML file
-async function loadDialogueData() {
+// Load global configuration (characters & backgrounds)
+async function loadGlobalConfig() {
   try {
-    const response = await fetch('Assets/Conversation data/conversations.yaml');
-    if (!response.ok) throw new Error('Failed to fetch conversation data');
+    const response = await fetch('Assets/ConversationData/conversations.yaml');
+    if (!response.ok) throw new Error('Failed to fetch global configuration');
     const yamlText = await response.text();
-    // js-yaml is loaded via CDN in index.html
     const parsedData = jsyaml.load(yamlText);
 
-    // Safely pull the nodes list out of the yaml nesting
-    if (parsedData && parsedData.dialogues && parsedData.dialogues.nexus_lounge) {
-      dialogueNodes = parsedData.dialogues.nexus_lounge.nodes;
-      console.log('Dialogue data loaded, nodes count:', Object.keys(dialogueNodes).length);
+    if (parsedData) {
+      allCharacters = parsedData.characters || {};
+      allBackgrounds = parsedData.backgrounds || {};
+      allConversations = parsedData.conversations || {};
+      console.log('Global configuration loaded successfully.');
     } else {
-      throw new Error('YAML structured unexpectedly.');
+      throw new Error('Global configuration structure is invalid.');
     }
   } catch (e) {
-    console.error('Error loading dialogue data:', e);
-    alert('Unable to load story data. See console for details.');
+    console.error('Error loading global configuration:', e);
+    alert('Unable to load configuration data. See console for details.');
+  }
+}
+
+// Dynamically fetch and parse a specific conversation file
+async function loadDialogueFile(dialogueId) {
+  try {
+    const resolvedPath = allConversations[dialogueId] || dialogueId;
+    const response = await fetch(`Assets/ConversationData/${resolvedPath}.yaml`);
+    if (!response.ok) throw new Error(`Failed to fetch dialogue file for '${dialogueId}' (resolved to '${resolvedPath}')`);
+    const yamlText = await response.text();
+    const parsedDialogue = jsyaml.load(yamlText);
+
+    if (parsedDialogue) {
+      allDialogues[dialogueId] = parsedDialogue;
+      dialogueNodes = parsedDialogue.nodes || {};
+      console.log(`Loaded dialogue file '${resolvedPath}.yaml', nodes count:`, Object.keys(dialogueNodes).length);
+    } else {
+      throw new Error(`Dialogue file for '${dialogueId}' is invalid.`);
+    }
+  } catch (e) {
+    console.error(`Error loading dialogue '${dialogueId}':`, e);
+    alert(`Unable to load story file for '${dialogueId}'. See console for details.`);
   }
 }
 
 // State Variables
+let activeLeftCharId = "";
+let activeRightCharId = "";
+
+function updateSceneCharacters(leftId, rightId) {
+  activeLeftCharId = leftId;
+  activeRightCharId = rightId;
+
+  const leftImg = document.getElementById("img-left");
+  const rightImg = document.getElementById("img-right");
+  const leftChar = document.getElementById("char-left");
+  const rightChar = document.getElementById("char-right");
+
+  // Handle Left Character image and visibility
+  if (leftId && allCharacters[leftId] && allCharacters[leftId].image) {
+    leftImg.src = allCharacters[leftId].image;
+    leftChar.classList.remove("hidden");
+  } else {
+    leftChar.classList.add("hidden");
+  }
+
+  // Handle Right Character image and visibility
+  if (rightId && allCharacters[rightId] && allCharacters[rightId].image) {
+    rightImg.src = allCharacters[rightId].image;
+    rightChar.classList.remove("hidden");
+  } else {
+    rightChar.classList.add("hidden");
+  }
+}
+
 let currentNodeId = "node_0";
 let currentTextIndex = 0;
 let isTyping = false;
@@ -74,18 +129,29 @@ function playBeep(frequency = 600, type = "sine", duration = 0.04) {
 
 // Start Game
 async function startGame() {
-  // Load dialogue data first
-  await loadDialogueData();
+  currentDialogueId = "1";
+  // Load dynamic config and first dialogue
+  await loadGlobalConfig();
+  await loadDialogueFile(currentDialogueId);
+  
   document.getElementById("start-screen").classList.add("hidden");
   document.getElementById("game-screen").classList.remove("hidden");
   document.getElementById("game-bg").classList.add("pan-active");
 
-  currentNodeId = "node_0";
+  const startNode = allDialogues[currentDialogueId].start_node || "node_0";
+  currentNodeId = startNode;
   dialogueHistory = [];
 
-  // Set sprites sources
-  document.getElementById("img-left").src = imagePaths.maya;
-  document.getElementById("img-right").src = imagePaths.yuki;
+  // Update background dynamically if specified
+  const bgKey = allDialogues[currentDialogueId].background;
+  if (bgKey && allBackgrounds[bgKey]) {
+    document.getElementById("game-bg").style.backgroundImage = `url('${allBackgrounds[bgKey]}')`;
+  }
+
+  // Set sprites sources dynamically
+  const leftCharId = allDialogues[currentDialogueId].left_character;
+  const rightCharId = allDialogues[currentDialogueId].right_character;
+  updateSceneCharacters(leftCharId, rightCharId);
 
   renderNode(currentNodeId);
 }
@@ -98,7 +164,8 @@ function renderNode(nodeId) {
 
   // Capitalize or match the speaker string formatting from your YAML configuration
   const rawSpeaker = node.speaker || "narrator";
-  const displaySpeaker = rawSpeaker.charAt(0).toUpperCase() + rawSpeaker.slice(1);
+  const charData = allCharacters[rawSpeaker];
+  const displaySpeaker = charData ? charData.name : (rawSpeaker.charAt(0).toUpperCase() + rawSpeaker.slice(1));
 
   // Handle speaker tag and highlight colors
   const speakerEl = document.getElementById("speaker-name");
@@ -110,7 +177,7 @@ function renderNode(nodeId) {
     if (dialogueHistory.length === 0 || dialogueHistory[dialogueHistory.length - 1].text !== node.text) {
       dialogueHistory.push({
         speaker: displaySpeaker,
-        speakerClass: rawSpeaker === "maya" ? "maya" : (rawSpeaker === "yuki" ? "yuki" : "narrator"),
+        speakerClass: rawSpeaker === "maya" || rawSpeaker === "princess" ? "maya" : (rawSpeaker === "yuki" || rawSpeaker === "schoolgirl" || rawSpeaker === "swimsuit" ? "yuki" : "narrator"),
         text: node.text
       });
     }
@@ -120,15 +187,15 @@ function renderNode(nodeId) {
   const leftChar = document.getElementById("char-left");
   const rightChar = document.getElementById("char-right");
 
-  if (rawSpeaker === "narrator") {
-    updateCharacterState(leftChar, "dimmed");
-    updateCharacterState(rightChar, "dimmed");
-  } else if (rawSpeaker === "maya") {
+  if (rawSpeaker === activeLeftCharId) {
     updateCharacterState(leftChar, "talking");
     updateCharacterState(rightChar, "dimmed");
-  } else if (rawSpeaker === "yuki") {
+  } else if (rawSpeaker === activeRightCharId) {
     updateCharacterState(leftChar, "dimmed");
     updateCharacterState(rightChar, "talking");
+  } else {
+    updateCharacterState(leftChar, "dimmed");
+    updateCharacterState(rightChar, "dimmed");
   }
 
   // Typewriter Text presentation
@@ -203,7 +270,13 @@ function displayChoices(choices) {
     btn.onclick = (e) => {
       e.stopPropagation(); // Avoid triggering page click advancement
       playBeep(450, "triangle", 0.08);
-      renderNode(choice.next);
+      if (choice.next_dialogue) {
+        transitionToDialogue(choice.next_dialogue);
+      } else if (choice.next) {
+        renderNode(choice.next);
+      } else {
+        quitToMenu();
+      }
     };
     container.appendChild(btn);
   });
@@ -223,13 +296,50 @@ function advanceDialogue() {
       // Do nothing, force user to pick a choice
       return;
     }
-    if (node.next) {
+    if (node.next_dialogue) {
+      transitionToDialogue(node.next_dialogue);
+    } else if (node.next) {
       renderNode(node.next);
     } else {
       // Game ended
       quitToMenu();
     }
   }
+}
+
+// Transition smoothly to a new dialogue/scene
+async function transitionToDialogue(dialogueId) {
+  // Dynamically load the scene's dialogue file if not cached
+  if (!allDialogues[dialogueId]) {
+    await loadDialogueFile(dialogueId);
+  }
+  
+  const activeDialogue = allDialogues[dialogueId];
+  if (!activeDialogue) {
+    console.error(`Dialogue '${dialogueId}' failed to load.`);
+    quitToMenu();
+    return;
+  }
+  currentDialogueId = dialogueId;
+  dialogueNodes = activeDialogue.nodes || {};
+
+  console.log(`Transitioning to dialogue: ${dialogueId}`);
+
+  // Update background dynamically if specified
+  const bgKey = activeDialogue.background;
+  if (bgKey && allBackgrounds[bgKey]) {
+    const bgUrl = allBackgrounds[bgKey];
+    document.getElementById("game-bg").style.backgroundImage = `url('${bgUrl}')`;
+  }
+
+  // Update scene characters dynamically if specified
+  const leftCharId = activeDialogue.left_character;
+  const rightCharId = activeDialogue.right_character;
+  updateSceneCharacters(leftCharId, rightCharId);
+
+  // Render the starting node of the new dialogue
+  const startNode = activeDialogue.start_node || "node_0";
+  renderNode(startNode);
 }
 
 // Keyboard shortcuts for advance
@@ -315,6 +425,7 @@ function toggleSound(checked) {
 function saveGame() {
   const gameState = {
     currentNodeId: currentNodeId,
+    currentDialogueId: currentDialogueId,
     dialogueHistory: dialogueHistory
   };
   localStorage.setItem("cyber_nexus_save", JSON.stringify(gameState));
@@ -327,20 +438,35 @@ function loadGame() {
   if (save) {
     const gameState = JSON.parse(save);
     dialogueHistory = gameState.dialogueHistory;
+    currentDialogueId = gameState.currentDialogueId || "1";
 
     // Switch into gameplay mode in case we are on start menu
     document.getElementById("start-screen").classList.add("hidden");
     document.getElementById("game-screen").classList.remove("hidden");
     document.getElementById("game-bg").classList.add("pan-active");
 
-    // Set sprites sources
-    document.getElementById("img-left").src = imagePaths.maya;
-    document.getElementById("img-right").src = imagePaths.yuki;
+    // Load global registry and active dialogue file dynamically
+    loadGlobalConfig().then(() => {
+      loadDialogueFile(currentDialogueId).then(() => {
+        const activeDialogue = allDialogues[currentDialogueId];
+        if (activeDialogue) {
+          // Ensure background is updated correctly on load
+          const bgKey = activeDialogue.background;
+          if (bgKey && allBackgrounds[bgKey]) {
+            document.getElementById("game-bg").style.backgroundImage = `url('${allBackgrounds[bgKey]}')`;
+          }
 
-    // Load dynamic node mapping
-    loadDialogueData().then(() => {
-      renderNode(gameState.currentNodeId);
-      playBeep(800, "triangle", 0.1);
+          // Update scene characters dynamically if specified
+          const leftCharId = activeDialogue.left_character;
+          const rightCharId = activeDialogue.right_character;
+          updateSceneCharacters(leftCharId, rightCharId);
+
+          renderNode(gameState.currentNodeId);
+          playBeep(800, "triangle", 0.1);
+        } else {
+          alert("Failed to load dialogue data for saved game.");
+        }
+      });
     });
   } else {
     alert("No save data found!");
