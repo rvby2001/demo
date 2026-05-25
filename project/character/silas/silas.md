@@ -33,11 +33,12 @@ Silas’s visual design must convey durability, physical strength, and a guarded
 
 ### Expression Sheet Matrix
 Every visual novel needs asset variations. Use these to track required sprite layers:
-* [ ] **Neutral / Baseline (The Wall):** A stoic, unreadable expression. Lips pressed into a flat, firm line, eyes alert and scanning the distance. His posture is relaxed but solid as a mountain, showing his guarded, quiet nature.
-* [ ] **Driven / "Want" Face (The Hunter):** Eyes narrowed in sharp focus, brow deeply furrowed. Jaw clenched tight, with a small smudge of soot across his cheek. The expression of a man facing down a monster, radiating absolute physical grit.
-* [ ] **Vulnerable / "Need" Face (The Softened Shield):** A faint, almost imperceptible gentleness in his eyes. His gaze is slightly downcast, and a very light, embarrassed stubble-blush is visible on his tanned cheeks. His mouth is slightly open, as if struggling to find the right words.
-* [ ] **Shock / Reaction (The Caught Guardian):** Stoicism completely shattered. Eyes wide, lips parted in surprise. His hand is half-raised as if caught off-guard by a sudden physical gesture from the player (e.g., a hug, or a hand placed over his).
-* [ ] **The Quirk Face (The Silent Grump):** An exasperated sigh. One eyebrow is twitched downward, his head is turned slightly away, and his arms are tightly crossed over his chest harness.
+* [x] **Neutral / Baseline (The Wall):** A stoic, unreadable expression. Lips pressed into a flat, firm line, eyes alert and scanning the distance. His posture is relaxed but solid as a mountain, showing his guarded, quiet nature.
+* [x] **Driven / "Want" Face (The Hunter):** Eyes narrowed in sharp focus, brow deeply furrowed. Jaw clenched tight, with a small smudge of soot across his cheek. The expression of a man facing down a monster, radiating absolute physical grit.
+* [x] **Vulnerable / "Need" Face (The Softened Shield):** A faint, almost imperceptible gentleness in his eyes. His gaze is slightly downcast, and a very light, embarrassed stubble-blush is visible on his tanned cheeks. His mouth is slightly open, as if struggling to find the right words.
+* [x] **Shock / Reaction (The Caught Guardian):** Stoicism completely shattered. Eyes wide, lips parted in surprise. His hand is half-raised as if caught off-guard by a sudden physical gesture from the player (e.g., a hug, or a hand placed over his).
+* [x] **The Quirk Face (The Silent Grump):** An exasperated sigh. One eyebrow is twitched downward, his head is turned slightly away, and his arms are tightly crossed over his chest harness.
+
 
 ### Behavioral Quirks & Body Language
 * **Quirk 1 (Silent Care):** Rather than saying "Are you alright?" or "I care about you," he will step close to the player, silently inspect their weapon straps, adjust a loose cloak buckle, or hand them a warm canteen of tea, before stepping back without a word.
