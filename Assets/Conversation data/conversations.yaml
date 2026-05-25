@@ -1,4 +1,4 @@
-project_name: "Crimson Sky"
+project_name: "Shadow Legacy"
 
 characters:
   narrator:
@@ -15,7 +15,7 @@ characters:
   hercules:
     name: "Hercules"
     color: "#FFD700"
-    image: "project/character/hercules/image/expression/hercules_concerned.png"
+    image: "project/character/hercules/image/expression/hercules_default.png"
   protagonist:
     name: "Protagonist"
     color: "#F5F5DC"

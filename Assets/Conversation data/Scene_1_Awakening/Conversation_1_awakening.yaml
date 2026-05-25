@@ -1,0 +1,121 @@
+start_node: "node_intro"
+background: "shadow_clearing"
+left_character: "dorian"
+right_character: "silas"
+nodes:
+  node_intro:
+    speaker: "narrator"
+    text: "The cold, damp mist clings to the gnarled tree roots around you as your vision slowly begins to clear."
+    next: "node_awakening"
+
+  node_awakening:
+    speaker: "narrator"
+    text: "You sit up, brushing off decaying leaves, and realize with a jolt of panic that you have no idea where you are. This is a dark, magical borderland that you definitely do not belong in."
+    next: "node_clash_sound"
+
+  node_clash_sound:
+    speaker: "narrator"
+    text: "A sharp clashing of steel rings out from the misty shadows ahead, followed by a violent flurry of movements."
+    next: "node_combat_visual"
+
+  node_combat_visual:
+    speaker: "narrator"
+    text: "Silas, wearing his heavy forest-green canvas duster, lunges forward with three silver hunting stakes. Dorian, his crimson velvet tailcoat catching the wind, dances backward with a mocking grace."
+    next: "node_silas_snarl"
+
+  node_silas_snarl:
+    speaker: "silas"
+    text: "Snarls, his jaw clenched tight. \"You should feel exceptionally lucky, Dorian, that I still haven't finished you off yet.\""
+    next: "node_dorian_mock"
+
+  node_dorian_mock:
+    speaker: "dorian"
+    text: "Lazily smirks, adjusting his obsidian-black gloves. \"My, my, Silas... still repeating the same predictable, rigid hunter protocols? It's almost adorable how much effort you waste.\""
+    next: "node_combat_climax"
+
+  node_combat_climax:
+    speaker: "narrator"
+    text: "The stakes and blades cross with a piercing screech. Silas prepares a lethal thrust while Dorian's crimson eyes glow intensely, his sharp fangs bared."
+    next: "node_hercules_intervene"
+
+  node_hercules_intervene:
+    speaker: "hercules"
+    text: "Golden feathers and massive flared white wings suddenly burst between them, physically blocking their weapons! \"Hey! Stop this right now, both of you! Look... our little lost guest has finally awakened!\""
+    next: "node_combat_freeze"
+
+  node_combat_freeze:
+    speaker: "narrator"
+    text: "Both combatants freeze, their weapons inches from Hercules's soft feathers. They slowly lower their arms, their eyes shifting reluctantly toward you."
+    next: "node_silas_grunt"
+
+  node_silas_grunt:
+    speaker: "silas"
+    text: "Grunts in deep frustration, silently rolling his right shoulder back. \"Dealing with our previous hatred and council matters will have to wait. We focus on the human first.\""
+    next: "node_dorian_agree"
+
+  node_dorian_agree:
+    speaker: "dorian"
+    text: "Pops open his pocket watch with a theatrical sigh. \"For once, Silas, I reluctantly agree. The little bird is finally looking at us. Let's see what she has to say for herself.\""
+    next: "node_choice_prompt"
+
+  node_choice_prompt:
+    speaker: "narrator"
+    text: "Both Silas and Dorian lock their dangerous, intense gazes directly onto you. How do you respond?"
+    choices:
+      - text: "Shrink back and pull your hood up."
+        next: "node_choice_passive"
+      - text: "Stand up and demand to know where you are."
+        next: "node_choice_assertive"
+
+  # --- Branch: Passive ---
+  node_choice_passive:
+    speaker: "narrator"
+    text: "You shrink back against a massive tree root, pulling your soft beige hood forward to shadow your eyes in fear."
+    next: "node_passive_silas"
+
+  node_passive_silas:
+    speaker: "silas"
+    text: "Steps forward instantly, his broad silhouette blocking Dorian from your view. \"Stay back. I'll handle the secure transport. She's in no state for your theatrical games.\""
+    next: "node_passive_dorian"
+
+  node_passive_dorian:
+    speaker: "dorian"
+    text: "Drapes his velvet tailcoat over his shoulder with a soft, dry chuckle. \"Oh, a shy little bird. How delightfully precious. But do be careful, Silas, she might freeze in that draft.\""
+    next: "node_passive_hercules"
+
+  node_passive_hercules:
+    speaker: "hercules"
+    text: "Flutters down close to you, folding his wings with a warm, bright smile. \"Don't worry! You're completely safe now. I'll make sure they behave!\""
+    next: "node_merge_point"
+
+  # --- Branch: Assertive ---
+  node_choice_assertive:
+    speaker: "narrator"
+    text: "You push yourself up from the forest floor, brushing off leaves, and lock eyes with them, demanding to know where you are."
+    next: "node_assertive_dorian"
+
+  node_assertive_dorian:
+    speaker: "dorian"
+    text: "Raises his hand to cover his mouth, his crimson eyes wide in genuine disbelief. \"My, my... what a fierce little bird. To stand so tall in front of two predators... I am almost impressed.\""
+    next: "node_assertive_hercules"
+
+  node_assertive_hercules:
+    speaker: "hercules"
+    text: "Claps his hands with cheerful, bubbly delight, his wings fluttering. \"Yes! That's the spirit! I knew she had fire in her! Welcome, brave traveler!\""
+    next: "node_assertive_silas"
+
+  node_assertive_silas:
+    speaker: "silas"
+    text: "Frowns in stoic surprise, silently adjusting his stakes. \"Bold. But foolish. Do you have any idea what kind of danger you've walked into?\""
+    next: "node_merge_point"
+
+  # --- Merge Point ---
+  node_merge_point:
+    speaker: "narrator"
+    text: "A fragile, tense silence falls over the clearing as a temporary, uneasy truce is established between the hunter, the vampire, and the angel."
+    next: "node_merge_end"
+
+  node_merge_end:
+    speaker: "narrator"
+    text: "The path ahead splits: will you follow Silas's grim protection, or accept Dorian's tempting invitation?"
+    next: null
