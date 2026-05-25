@@ -82,7 +82,33 @@ Used to halt dialogue and display a list of interactive choices to the player.
 
 ---
 
-## 3. Strict YAML Integrity Rules
+## 3. Character Integration & Global Registry
+
+Before writing a character into dialogue trees, they must be registered in the global engine config file `Assets/ConversationData/conversations.yaml`.
+
+### Character Registration Blueprint
+*   **Name & Color Sourcing**: Sourced directly from their character design profile markdown at `project/character/<name>/<name>.md` (e.g. signature color hex).
+*   **Image Sourcing (Optional)**: Sourced directly from their visual asset folder at `project/character/<name>/image/<name>_default.png`. If a character does not have an image asset or the `image` key is completely omitted in the global configuration, the game engine will automatically hide their sprite container and render no visual slot on stage.
+
+#### Registry Example (conversations.yaml)
+```yaml
+characters:
+  narrator:
+    name: "Narrator"
+    color: "#aaaaaa"
+  dorian:
+    name: "Dorian"
+    color: "#8B0000"                           # Sourced from project/character/dorian/dorian.md
+    image: "project/character/dorian/image/dorian default.png"  # Sourced from project/character/dorian/image/
+  silas:
+    name: "Silas"
+    color: "#708090"                           # Sourced from project/character/silas/silas.md
+    image: "project/character/silas/image/silas_default.png"    # Sourced from project/character/silas/image/
+```
+
+---
+
+## 4. Strict YAML Integrity Rules
 
 To prevent game crashes and parser exceptions, always validate the following rules:
 
@@ -92,13 +118,15 @@ To prevent game crashes and parser exceptions, always validate the following rul
 > *   **Quote Your Dialogue:** Always enclose the `text` field in double quotes `""`. This escapes internal punctuation like apostrophes, colons, or commas.
 > *   **Unique Node Keys:** Never duplicate a node ID within the same file.
 > *   **Valid Character References:** All character IDs used in `left_character`, `right_character`, and `speaker` fields must match keys defined in `Assets/ConversationData/conversations.yaml`.
+> *   **Sourced Character Data**: New characters must be registered in `conversations.yaml` using name/color/image data sourced from the `project/character` folder.
 > *   **Valid Background Reference:** The `background` field must match a background key registered in `conversations.yaml`.
 > *   **Numerical Dialogue Routing:** All `next_dialogue` routes must be integers corresponding to the registered conversation number keys under `conversations` in `conversations.yaml` (e.g., `1`, `2`, `3`, `4`).
 > *   **Explicit Closures:** Every dialogue chain must end either with `next: null` or a transition using `next_dialogue`. Never leave a chain hanging without a termination key.
 
+
 ---
 
-## 4. Showcase Example Scene
+## 5. Showcase Example Scene
 
 Below is a complete, syntactically perfect scene YAML demonstrating the **Branch & Merge** pattern and **Branch & Exit** scene transitions.
 
@@ -174,7 +202,7 @@ nodes:
 
 ---
 
-## 5. Prompt Generator Directives (For AI Gen)
+## 6. Prompt Engineering Directives (For AI Gen)
 
 If using an LLM to generate game-ready scene YAMLs, copy and paste this system prompt instruction:
 
