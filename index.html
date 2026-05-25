@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cyber Nexus - A Visual Novel Adventure</title>
+  <title>Visual Novel</title>
   <meta name="description" content="An interactive web visual novel about gaming, anime, and late-night gaming sessions. Built with premium glassmorphism and HTML5/CSS3.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -22,7 +22,7 @@
   <!-- Start Screen -->
   <main id="start-screen" class="screen-overlay">
     <div class="glass-panel title-container">
-      <h1 class="game-title">CYBER<span class="neon-text">NEXUS</span></h1>
+      <h1 class="game-title"></h1>
       <p class="game-subtitle">Late Night Lounge Talks</p>
       <div class="menu-buttons">
         <button id="btn-start" class="btn btn-primary" onclick="startGame()">Start Novel</button>
@@ -36,7 +36,7 @@
   <section id="game-screen" class="hidden">
     <!-- Top Utility Bar -->
     <header class="glass-bar top-bar">
-      <div class="logo-small">CYBER<span class="neon-text">NEXUS</span></div>
+      <div class="logo-small"></div>
       <nav class="game-controls">
         <button id="btn-log" class="control-btn" title="Dialogue History" onclick="toggleLogModal(true)">History</button>
         <button id="btn-save" class="control-btn" title="Quick Save" onclick="saveGame()">Save</button>
@@ -110,7 +110,7 @@
   <div id="about-modal" class="modal-overlay hidden" onclick="toggleAboutModal(false)">
     <div class="glass-panel modal-content" onclick="event.stopPropagation()">
       <div class="modal-header">
-        <h2>About Cyber Nexus</h2>
+        <h2>About</h2>
         <button class="close-btn" onclick="toggleAboutModal(false)">&times;</button>
       </div>
       <div class="modal-body text-center">

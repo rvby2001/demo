@@ -92,6 +92,8 @@ Before writing a character into dialogue trees, they must be registered in the g
 
 #### Registry Example (conversations.yaml)
 ```yaml
+project_name: "Hehe Nexus"
+
 characters:
   narrator:
     name: "Narrator"

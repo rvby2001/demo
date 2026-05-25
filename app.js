@@ -5,6 +5,7 @@ let allDialogues = {};
 let allCharacters = {};
 let allBackgrounds = {};
 let allConversations = {};
+let currentProjectName = ""; // Dynamic project name loaded directly from config
 
 // Load global configuration (characters & backgrounds)
 async function loadGlobalConfig() {
@@ -18,6 +19,12 @@ async function loadGlobalConfig() {
       allCharacters = parsedData.characters || {};
       allBackgrounds = parsedData.backgrounds || {};
       allConversations = parsedData.conversations || {};
+      
+      // Dynamically initialize the project name and logo headers from config
+      if (parsedData.project_name) {
+        initProjectName(parsedData.project_name);
+      }
+      
       console.log('Global configuration loaded successfully.');
     } else {
       throw new Error('Global configuration structure is invalid.');
@@ -25,6 +32,43 @@ async function loadGlobalConfig() {
   } catch (e) {
     console.error('Error loading global configuration:', e);
     alert('Unable to load configuration data. See console for details.');
+  }
+}
+
+// Dynamically initialize project name details in document title and DOM elements
+function initProjectName(projectName) {
+  if (!projectName) return;
+  currentProjectName = projectName;
+  
+  // Update browser tab/document title
+  document.title = `${projectName} - A Visual Novel Adventure`;
+
+  // Format project name for our dual-tone neon glassmorphic aesthetic (splitting last word)
+  const words = projectName.split(' ');
+  let formattedHtml = "";
+  if (words.length > 1) {
+    const mainPart = words.slice(0, -1).join(' ').toUpperCase();
+    const lastWord = words[words.length - 1].toUpperCase();
+    formattedHtml = `${mainPart}<span class="neon-text">${lastWord}</span>`;
+  } else {
+    formattedHtml = projectName.toUpperCase();
+  }
+
+  // Inject beautiful formatted project name into title/logo elements
+  const gameTitleEl = document.querySelector(".game-title");
+  if (gameTitleEl) {
+    gameTitleEl.innerHTML = formattedHtml;
+  }
+
+  const logoSmallEl = document.querySelector(".logo-small");
+  if (logoSmallEl) {
+    logoSmallEl.innerHTML = formattedHtml;
+  }
+
+  // Update modal title elements dynamically
+  const aboutTitleEl = document.querySelector("#about-modal h2");
+  if (aboutTitleEl) {
+    aboutTitleEl.textContent = `About ${projectName}`;
   }
 }
 
@@ -138,8 +182,10 @@ function playBeep(frequency = 600, type = "sine", duration = 0.04) {
 // Start Game
 async function startGame() {
   currentDialogueId = "1";
-  // Load dynamic config and first dialogue
-  await loadGlobalConfig();
+  // Ensure global config is loaded on start
+  if (Object.keys(allCharacters).length === 0) {
+    await loadGlobalConfig();
+  }
   await loadDialogueFile(currentDialogueId);
   
   document.getElementById("start-screen").classList.add("hidden");
@@ -436,13 +482,15 @@ function saveGame() {
     currentDialogueId: currentDialogueId,
     dialogueHistory: dialogueHistory
   };
-  localStorage.setItem("cyber_nexus_save", JSON.stringify(gameState));
+  const saveKey = `${currentProjectName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_save`;
+  localStorage.setItem(saveKey, JSON.stringify(gameState));
   playBeep(900, "triangle", 0.12);
   alert("Game saved successfully!");
 }
 
 function loadGame() {
-  const save = localStorage.getItem("cyber_nexus_save");
+  const saveKey = `${currentProjectName.toLowerCase().replace(/[^a-z0-9]/g, '_')}_save`;
+  const save = localStorage.getItem(saveKey);
   if (save) {
     const gameState = JSON.parse(save);
     dialogueHistory = gameState.dialogueHistory;
@@ -480,3 +528,6 @@ function loadGame() {
     alert("No save data found!");
   }
 }
+
+// Automatically load dynamic configuration and project name upon page load
+loadGlobalConfig();
