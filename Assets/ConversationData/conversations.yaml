@@ -21,7 +21,8 @@ characters:
     color: "#F5F5DC"
 
 backgrounds:
-  shadow_clearing: "Assets/Images/background/village.jpg"
+  shadow_clearing: "Assets/Images/background/Dark forest.png"
+
   village: "Assets/Images/background/village.jpg"
   garden: "Assets/Images/background/garden.jpg"
   teaparty: "Assets/Images/background/teaparty.jpg"
