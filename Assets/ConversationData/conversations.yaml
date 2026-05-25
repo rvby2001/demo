@@ -23,11 +23,5 @@ characters:
 backgrounds:
   shadow_clearing: "Assets/Images/background/Dark forest.png"
 
-  village: "Assets/Images/background/village.jpg"
-  garden: "Assets/Images/background/garden.jpg"
-  teaparty: "Assets/Images/background/teaparty.jpg"
-  tent: "Assets/Images/background/tent.jpg"
-  mine: "Assets/Images/background/mine.jpg"
-
 conversations:
   "1": "Scene_1_Awakening/Conversation_1_awakening"
