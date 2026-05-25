@@ -351,6 +351,33 @@ body, html {
   box-shadow: 0 4px 15px var(--accent-pink-glow);
 }
 
+.speaker-tag.dorian-tag {
+  background: linear-gradient(135deg, #8B0000, #4a0000);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(139, 0, 0, 0.5);
+  border: 1px solid rgba(241, 229, 172, 0.4); /* gold accent border */
+}
+
+.speaker-tag.silas-tag {
+  background: linear-gradient(135deg, #708090, #2E8B57);
+  color: #ffffff;
+  box-shadow: 0 4px 15px rgba(112, 128, 144, 0.4);
+}
+
+.speaker-tag.hercules-tag {
+  background: linear-gradient(135deg, #FFD700, #FFFDD0);
+  color: #12121c;
+  box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+  border: 1px solid rgba(135, 206, 235, 0.5); /* sky blue accent border */
+}
+
+.speaker-tag.protagonist-tag {
+  background: linear-gradient(135deg, #F5F5DC, #36454F);
+  color: #12121c;
+  box-shadow: 0 4px 15px rgba(245, 245, 220, 0.3);
+}
+
+
 .dialogue-body {
   font-size: 1.15rem;
   line-height: 1.6;

@@ -237,6 +237,17 @@ function renderNode(nodeId) {
     }
   }
 
+  // Dynamically swap a third character onto the stage if they speak
+  if (rawSpeaker !== "narrator" && allCharacters[rawSpeaker] && allCharacters[rawSpeaker].image) {
+    if (rawSpeaker !== activeLeftCharId && rawSpeaker !== activeRightCharId) {
+      if (activeLeftCharId && document.getElementById("char-left") && document.getElementById("char-left").classList.contains("talking")) {
+        updateSceneCharacters(activeLeftCharId, rawSpeaker);
+      } else {
+        updateSceneCharacters(rawSpeaker, activeRightCharId);
+      }
+    }
+  }
+
   // Handle Character Display States dynamically mapped from who is currently speaking
   const leftChar = document.getElementById("char-left");
   const rightChar = document.getElementById("char-right");
@@ -251,6 +262,7 @@ function renderNode(nodeId) {
     updateCharacterState(leftChar, "dimmed");
     updateCharacterState(rightChar, "dimmed");
   }
+
 
   // Typewriter Text presentation
   const textEl = document.getElementById("dialogue-text");
