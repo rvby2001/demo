@@ -63,6 +63,14 @@ function updateSceneCharacters(leftId, rightId) {
   const leftChar = document.getElementById("char-left");
   const rightChar = document.getElementById("char-right");
 
+  // Dynamic error handlers to hide sprite slots if files are missing on disk
+  leftImg.onerror = () => {
+    leftChar.classList.add("hidden");
+  };
+  rightImg.onerror = () => {
+    rightChar.classList.add("hidden");
+  };
+
   // Handle Left Character image and visibility
   if (leftId && allCharacters[leftId] && allCharacters[leftId].image) {
     leftImg.src = allCharacters[leftId].image;

@@ -1,0 +1,23 @@
+characters:
+  dorian:
+    name: "Dorian"
+    color: "#8B0000"
+    image: "project/character/dorian/image/dorian default.png"
+  silas:
+    name: "Silas"
+    color: "#708090"
+    image: "project/character/silas/image/silas_default.png"
+  hercules:
+    name: "Hercules"
+    color: "#FFD700"
+
+backgrounds:
+  lounge: "Assets/Images/background/teaparty.jpg"
+  village: "Assets/Images/background/village.jpg"
+  teaparty: "Assets/Images/background/teaparty.jpg"
+  garden: "Assets/Images/background/garden.jpg"
+  tent: "Assets/Images/background/tent.jpg"
+  mine: "Assets/Images/background/mine.jpg"
+
+conversations:
+  1: "Scene_1_Teaparty/Conversation_1_teaparty"
