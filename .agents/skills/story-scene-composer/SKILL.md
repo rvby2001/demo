@@ -88,7 +88,7 @@ Before writing a character into dialogue trees, they must be registered in the g
 
 ### Character Registration Blueprint
 *   **Name & Color Sourcing**: Sourced directly from their character design profile markdown at `project/character/<name>/<name>.md` (e.g. signature color hex).
-*   **Image Sourcing (Optional)**: Sourced directly from their visual asset folder at `project/character/<name>/image/<name>_default.png`. If a character does not have an image asset or the `image` key is completely omitted in the global configuration, the game engine will automatically hide their sprite container and render no visual slot on stage.
+*   **Image Sourcing (Optional)**: Sourced *strictly and only* from their expression-specific folder at `project/character/<name>/image/expression/<name>_<expression>.png` (e.g., `project/character/dorian/image/expression/dorian_normal.png`). If a character does not have an image asset or the `image` key is completely omitted in the global configuration, the game engine will automatically hide their sprite container and render no visual slot on stage.
 
 #### Registry Example (conversations.yaml)
 ```yaml
@@ -99,11 +99,11 @@ characters:
   dorian:
     name: "Dorian"
     color: "#8B0000"                           # Sourced from project/character/dorian/dorian.md
-    image: "project/character/dorian/image/dorian default.png"  # Sourced from project/character/dorian/image/
+    image: "project/character/dorian/image/expression/dorian_normal.png"  # Sourced strictly from project/character/dorian/image/expression/
   silas:
     name: "Silas"
     color: "#708090"                           # Sourced from project/character/silas/silas.md
-    image: "project/character/silas/image/silas_default.png"    # Sourced from project/character/silas/image/
+    image: "project/character/silas/image/expression/silas_normal.png"    # Sourced strictly from project/character/silas/image/expression/
 ```
 
 ---

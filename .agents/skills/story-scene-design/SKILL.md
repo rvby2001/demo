@@ -25,6 +25,7 @@ Because visual novels rely on background art to set the scene, the design must e
 Clearly outline which characters are on stage and how they are positioned visually:
 *   **Left vs. Right Positions:** Establishing who occupies the visual focus slots on screen.
 *   **Narrative Goal:** The core objective or resolution of this specific scene (e.g., finding clues, having a late-night bonding session, resolving an argument).
+*   **Expression Sprite Sourcing:** Sourced strictly and only from the character's expression-specific subfolder at `project/character/<name>/image/expression/<name>_<expression>.png` (e.g., `project/character/dorian/image/expression/dorian_normal.png` or `project/character/silas/image/expression/silas_normal.png`).
 
 ### C. Character Friction (Want vs. Need Clashes)
 A scene's narrative friction relies heavily on the tension between characters' individual **Wants** and **Needs** (from the `character-design` skill):
